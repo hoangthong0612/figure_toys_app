@@ -16,7 +16,6 @@ class _MainLayoutState extends State<MainLayout> {
     setState(() {
       selectedMenuIndex = index; // Cập nhật index khi nhận từ SideMenuWidget
     });
-    print("Selected menu index: $index"); // In ra index để kiểm tra
   }
 
   @override
