@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class SideMenuData {
   final menu = <MenuModel>[
-    MenuModel(icon: Icons.home, name: "Trang chủ" , widget: DashBoardPage()),
-    MenuModel(icon: Icons.production_quantity_limits_outlined, name: "Sản phẩm", widget: Text('Sản phẩm')),
-    MenuModel(icon: Icons.logout, name: "Đăng xuất" ,widget: Text('Đăng xuất')),
+    MenuModel(icon: Icons.home, name: "Trang chủ" , route: 'home'),
+    MenuModel(icon: Icons.production_quantity_limits_outlined, name: "Sản phẩm", route: 'product'),
+    MenuModel(icon: Icons.logout, name: "Đăng xuất" ,route: 'logout'),
   ];
 
 }

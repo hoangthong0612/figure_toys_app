@@ -1,59 +1,84 @@
-import 'package:figure_toys/data/menu_data.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:figure_toys/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class SideMenuWidget extends StatefulWidget {
-  final Function(int) onMenuSelected; // Callback để gửi index
+import '../../../data/menu_data.dart';
 
-  SideMenuWidget({required this.onMenuSelected});
+class SideMenu extends StatefulWidget {
+  final Function(String) onPageSelected;
+  final String currentPage; // Trang hiện tại
+
+  const SideMenu({
+    required this.onPageSelected,
+    required this.currentPage,
+  });
+
   @override
-  State<StatefulWidget> createState() => _SideMenuWidgetState();
+  State<SideMenu> createState() => _SideMenuState();
 }
 
-class _SideMenuWidgetState extends State<SideMenuWidget> {
+class _SideMenuState extends State<SideMenu> {
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     final data = SideMenuData();
+
     return Container(
-      child: ListView.builder(
-        itemBuilder: (context, index) => _builderMenuEntry(data, index),
-        itemCount: data.menu.length,
+      width: 250,
+      color: CustomColor.whiteColor,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: SizedBox(height: 150,child: Image(image: AssetImage('assets/images/logo.png')) , ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: ListView.builder(
+                itemBuilder: (context, index) => _builderMenuEntry(data, index),
+                itemCount: data.menu.length,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _builderMenuEntry(SideMenuData data, int index) {
-    final isSelected = selectedIndex == index;
-
+    print(data.menu[index].route);
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        color: isSelected ? Colors.deepOrange : Colors.transparent
-
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: widget.currentPage == data.menu[index].route
+              ? Colors.deepOrange
+              : Colors.transparent),
       child: InkWell(
-        onTap: () => setState(() {
-          selectedIndex = index;
-          widget.onMenuSelected(index); // Gửi index về MainLayout
-        }),
+        onTap: () =>
+            // onPageSelected(route);
+            widget.onPageSelected(
+                data.menu[index].route) // Gửi index về MainLayout
+        ,
         child: Row(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
               child: Icon(
                 data.menu[index].icon,
-                color: isSelected ? Colors.white :Colors.grey,
+                color: widget.currentPage == data.menu[index].route
+                    ? Colors.white
+                    : Colors.black,
               ),
             ),
             Text(
               data.menu[index].name,
               style: TextStyle(
-                fontSize: 16,
-                  color: isSelected ? Colors.white :Colors.grey,
-                fontWeight: FontWeight.normal
-              ),
+                  fontSize: 16,
+                  color: widget.currentPage == data.menu[index].route
+                      ? Colors.white
+                      : Colors.black,
+                  fontWeight: FontWeight.normal),
             ),
           ],
         ),

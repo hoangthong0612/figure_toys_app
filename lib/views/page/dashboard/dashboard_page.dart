@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-class DashBoardPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _DashBoardPageState();
-  
-}
-
-class _DashBoardPageState extends State<DashBoardPage> {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Center(child: Text("Trang chủ"));
+    return Center(
+      child: Text(
+        'Home Screen',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
   }
-  
 }
