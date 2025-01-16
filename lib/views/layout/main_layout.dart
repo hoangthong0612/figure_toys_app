@@ -17,11 +17,12 @@ class MainLayout extends StatefulWidget {
   _MainLayoutState createState() => _MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout>  with TickerProviderStateMixin {
+class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   late ValueNotifier<String> currentPage;
   late ValueNotifier<bool> isMenuVisible;
   late AnimationController _menuController;
   late Animation<Offset> _menuAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +38,8 @@ class _MainLayoutState extends State<MainLayout>  with TickerProviderStateMixin 
 
     // Animation for menu sliding effect
     _menuAnimation = Tween<Offset>(
-      begin: Offset(-1.0, 0.0),  // Start position (outside the screen)
-      end: Offset(0.0, 0.0),     // End position (in the screen)
+      begin: Offset(-1.0, 0.0), // Start position (outside the screen)
+      end: Offset(0.0, 0.0), // End position (in the screen)
     ).animate(CurvedAnimation(
       parent: _menuController,
       curve: Curves.easeInOut, // Smooth transition curve
@@ -80,12 +81,12 @@ class _MainLayoutState extends State<MainLayout>  with TickerProviderStateMixin 
                         },
                       );
                     },
-                  ),);
+                  ),
+                );
               } else {
                 _menuController.reverse();
                 return SizedBox.shrink();
               }
-
             },
           ),
           // Nội dung chính
@@ -100,14 +101,29 @@ class _MainLayoutState extends State<MainLayout>  with TickerProviderStateMixin 
                   },
                 ),
                 Expanded(
-                  child: ValueListenableBuilder<String>(
-                    valueListenable: currentPage,
-                    builder: (context, page, child) {
-                      return widget.pages[page] ??
-                          Center(
-                            child: Text('Page not found!'),
-                          );
-                    },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: CustomColor.whiteColor,
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.black, // Bóng mờ
+                      //     offset: Offset(0, 2), // Đổ bóng theo trục x, y
+                      //     blurRadius: 4, // Độ mờ của bóng
+                      //   ),
+                      // ],
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: currentPage,
+                      builder: (context, page, child) {
+                        return widget.pages[page] ??
+                            Center(
+                              child: Text('Page not found!'),
+                            );
+                      },
+                    ),
                   ),
                 ),
                 Footer(),

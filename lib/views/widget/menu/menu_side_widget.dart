@@ -47,7 +47,6 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   Widget _builderMenuEntry(SideMenuData data, int index) {
-    print(data.menu[index].route);
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
