@@ -4,8 +4,8 @@ class Product {
   String? description;
   String? category;
   double? price;
-  double? discountPercentage;
-  double? rating;
+  dynamic discountPercentage;
+  dynamic rating;
   int? stock;
   List<String>? tags;
   String? brand;
@@ -113,9 +113,9 @@ class Product {
 }
 
 class Dimensions {
-  double? width;
-  double? height;
-  double? depth;
+  dynamic width;
+  dynamic height;
+  dynamic depth;
 
   Dimensions({this.width, this.height, this.depth});
 
@@ -135,7 +135,7 @@ class Dimensions {
 }
 
 class Reviews {
-  int? rating;
+  dynamic rating;
   String? comment;
   String? date;
   String? reviewerName;

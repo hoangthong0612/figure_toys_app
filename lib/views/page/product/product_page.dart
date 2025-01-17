@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/product_model.dart';
+import '../../components/product_card.dart';
 import 'product_cubit.dart';
 
 class ProductPage extends StatelessWidget {
@@ -11,30 +12,23 @@ class ProductPage extends StatelessWidget {
       create: (context) => ProductCubit()..fetchData(),
       child: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
-          print(state);
+          double width = MediaQuery.of(context).size.width ;
           if (state is ProductLoading) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: Colors.deepOrange,));
           } else if (state is ProductLoaded) {
-            return ListView.builder(
-
-              itemCount: state.data.length,
+            final products = state.data;
+            return GridView.builder(
+              padding: EdgeInsets.all(8),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: width > 1280 ? 8 : width > 720 ? 4 : 2, // Number of columns
+                mainAxisSpacing: 8, // Spacing between rows
+                crossAxisSpacing: 8, // Spacing between columns
+                childAspectRatio: 0.7, // Aspect ratio of each grid item
+              ),
+              itemCount: products.length,
               itemBuilder: (context, index) {
-                print("state");
-                print(state);
-                final item = state.data[index];
-                return Column(
-                  children: [
-                    Image.network(item['thumbnail']),
-                    Text(
-                      item['title'],
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    Text(item['description'])
-                  ],
-                );
+                final product = products[index];
+                return ProductCard(product: product);
               },
             );
           } else if (state is ProductError) {

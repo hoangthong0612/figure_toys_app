@@ -1,5 +1,6 @@
 import 'package:figure_toys/views/layout/main_layout.dart';
 import 'package:figure_toys/views/page/dashboard/dashboard_page.dart';
+import 'package:figure_toys/views/page/product/product_detail_page.dart';
 import 'package:figure_toys/views/page/product/product_page.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
           'another': Text('Another Page'),
         },
       ),
+
+
+
 
     );
   }

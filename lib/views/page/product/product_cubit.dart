@@ -9,7 +9,7 @@ class ProductInitial extends ProductState {}
 class ProductLoading extends ProductState {}
 
 class ProductLoaded extends ProductState {
-  final List<dynamic> data;
+  final List<Product> data;
 
   ProductLoaded(this.data);
 }
@@ -25,16 +25,19 @@ class ProductCubit extends Cubit<ProductState> {
 
   final Dio _dio = Dio();
 
-  Future<void> fetchData() async {
-    emit(ProductLoading()); // Báo hiệu trạng thái đang load
+  Future fetchData() async {
+    emit(ProductLoading());
     try {
       final response = await _dio.get('https://dummyjson.com/products');
-      print(response.data['products']);
-      emit(ProductLoaded(response.data['products'])); // Cập nhật trạng thái khi có dữ liệu
+      List<Product> products = (response.data['products'] as List<dynamic>)
+          .map((item) => Product.fromJson(item))
+          .toList();
+      emit(ProductLoaded(products));
     } catch (e) {
-      emit(ProductError(e.toString())); // Xử lý lỗi
+      emit(ProductError(e.toString()));
     }
   }
+
 
 }
 
