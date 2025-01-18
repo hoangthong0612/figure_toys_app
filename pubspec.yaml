@@ -38,6 +38,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   carousel_slider: ^5.0.0
   smooth_page_indicator: ^1.2.0+3
+  shared_preferences: ^2.3.5
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,9 @@
+import 'package:figure_toys/utils/enum_base.dart';
 import 'package:figure_toys/views/page/product/product_detail_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/product_model.dart';
+import '../../utils/common_function.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -12,14 +14,13 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
+        pushPage(
           context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailPage(
-              id: product.id ?? 0,
-              name: product.title ?? '',
-            ),
+          ProductDetailPage(
+            id: product.id ?? 0,
+            name: product.title ?? '',
           ),
+          transitionAnimation: TransitionEnum.rightToLeft
         );
       },
       child: Card(

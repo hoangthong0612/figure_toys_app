@@ -1,5 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:figure_toys/utils/colors.dart';
+import 'package:figure_toys/utils/common_function.dart';
+import 'package:figure_toys/utils/enum_base.dart';
+import 'package:figure_toys/views/page/cart/cart_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -22,11 +25,29 @@ class ProductDetailWidget extends StatefulWidget {
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
   int activeIndex = 0;
+  int quantityProduct = 0;
   final CarouselSliderController _controller = CarouselSliderController();
+
+  void changeQuantity(int type) {
+    if (type == 0) {
+      if (quantityProduct == 0) {
+        return;
+      }
+      setState(() {
+        quantityProduct -= 1;
+      });
+    } else {
+      setState(() {
+        quantityProduct += 1;
+      });
+    }
+  }
 
   void clickNextImage(String type) {
     int active = activeIndex;
-    int length = widget.getImages().length;
+    int length = widget
+        .getImages()
+        .length;
     if (type == 'left') {
       if (active == 0) {
         _controller.animateToPage(length - 1);
@@ -45,27 +66,32 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = (widget.getImages().length > 0)
+    final List<Widget> imageSliders = (widget
+        .getImages()
+        .length > 0)
         ? widget
-            .getImages()
-            .map((item) => Container(
-
-                  margin: EdgeInsets.all(5.0),
-                  child: Image.network(
-                    item,
-                    fit: BoxFit.fill,
-                  ),
-                ))
-            .toList()
+        .getImages()
+        .map((item) =>
+        Container(
+          margin: EdgeInsets.all(5.0),
+          child: Image.network(
+            item,
+            fit: BoxFit.fill,
+          ),
+        ))
+        .toList()
         : [Text('No Image')];
 
     return Stack(
       children: [
         SingleChildScrollView(
-
           child: Container(
             constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height, // Set minimum height
+              minHeight:
+              MediaQuery
+                  .of(context)
+                  .size
+                  .height, // Set minimum height
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,10 +122,11 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: IconButton(
-                                onPressed: () => {
-                                      // print('left')
-                                      clickNextImage('right')
-                                    },
+                                onPressed: () =>
+                                {
+                                  // print('left')
+                                  clickNextImage('right')
+                                },
                                 icon: Icon(Icons.arrow_forward)),
                           ),
                         ),
@@ -110,7 +137,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           carouselController: _controller,
                           options: CarouselOptions(
                               autoPlay:
-                                  widget.getImages().length > 1 ? true : false,
+                              widget
+                                  .getImages()
+                                  .length > 1 ? true : false,
                               autoPlayInterval: Duration(seconds: 10),
                               // aspectRatio: 1.0,
                               // enlargeCenterPage: true,
@@ -129,7 +158,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 Center(
                   child: AnimatedSmoothIndicator(
                     activeIndex: activeIndex,
-                    count: widget.getImages().length,
+                    count: widget
+                        .getImages()
+                        .length,
                     effect: ExpandingDotsEffect(
                         dotHeight: 10,
                         dotWidth: 10,
@@ -147,7 +178,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 25),
+                  const EdgeInsets.symmetric(horizontal: 50, vertical: 25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -220,30 +251,58 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                      onPressed: () => {},
-                      icon: Icon(Icons.shopping_cart_outlined)),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                          onPressed: () =>
+                          {
+                            pushPage(context, CartPage(),
+                                transitionAnimation: TransitionEnum.upToDown)
+                          },
+                          icon: Icon(Icons.shopping_cart_outlined),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: CircleAvatar(
+                          radius: 13,
+                          backgroundColor: Colors.deepOrange,
+                          child: Text(
+                            '100',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                   SizedBox(
                     width: 30,
                   ),
                   Row(
                     children: [
-                      ElevatedButton(onPressed: () => {
-
-                      }, child: Text('-'))
+                      ElevatedButton(
+                          onPressed: () => {changeQuantity(0)},
+                          child: Text('-'))
                     ],
                   ),
                   SizedBox(
-                    width: 200,
+                    width: 50,
                     child: Center(
-                      child: Text('1'),
+                      child: Text('$quantityProduct'),
                     ),
                   ),
                   Row(
                     children: [
-                      ElevatedButton(onPressed: () => {
-
-                      }, child: Text('+'))
+                      ElevatedButton(
+                          onPressed: () => {changeQuantity(1)},
+                          child: Text('+'))
                     ],
                   ),
                   SizedBox(
@@ -251,15 +310,20 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => {},
+                      onPressed: () =>
+                      {
+                        addToCartProduct()
+                      },
                       style: ButtonStyle(
                         backgroundColor:
-                            WidgetStatePropertyAll<Color>(Colors.deepOrange),
+                        WidgetStatePropertyAll<Color>(Colors.deepOrange),
                         foregroundColor:
-                            WidgetStatePropertyAll<Color>(Colors.white),
-                        padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 0, vertical: 25))
+                        WidgetStatePropertyAll<Color>(Colors.white),
+                        padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 25),
+                        ),
                       ),
-                      child: Text('Mua ngay'),
+                      child: Text('Mua'),
                     ),
                   )
                 ],
@@ -269,5 +333,24 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
         )
       ],
     );
+  }
+
+  addToCartProduct() {
+    if (quantityProduct <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Số lượng sản phẩm phải > 0')),
+      );
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+                'Đã thêm vào giỏ hàng')),
+
+      );
+    }
   }
 }
