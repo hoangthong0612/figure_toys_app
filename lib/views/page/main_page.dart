@@ -14,12 +14,18 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-
+class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
+  bool isLogin = false;
   Future checkToken() async {
     String? token = await SharedPreferencesManage.getToken();
     if (isNullOrEmpty(token)) {
-      pushAndRemoveUntil(context, LoginPage());
+      setState(() {
+        isLogin = false;
+      });
+    }else {
+      setState(() {
+        isLogin = true;
+      });
     }
   }
 
@@ -27,18 +33,27 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     checkToken();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+
+  @override
   void dispose() {
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
+    return isLogin ? Scaffold(
       backgroundColor: CustomColor.bgColor,
       body: MainLayout(
         initialPage: 'home',
@@ -48,6 +63,6 @@ class _MainPageState extends State<MainPage> {
           'another': Text('Another Page'),
         },
       ),
-    ) ;
+    )  : LoginPage();
   }
 }

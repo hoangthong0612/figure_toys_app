@@ -54,9 +54,29 @@ class Header extends StatelessWidget {
             style: TextStyle(color: Colors.black, fontSize: 20),
           ),
           Expanded(
-              child: IconButton(
-                  onPressed: () => {clickLogout(context)},
-                  icon: Icon(Icons.logout))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: IconButton(
+                    onPressed: () => {clickLogout(context)},
+                    icon: Icon(Icons.logout),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => {print('123123213')},
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Image.network(
+                        'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/04/hinh-anh-de-thuong-41.jpg'),
+                  ),
+                ),
+
+              ],
+            ),
+          ),
         ],
       ),
     );
