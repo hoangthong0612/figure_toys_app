@@ -1,5 +1,8 @@
 import 'package:figure_toys/utils/colors.dart';
+import 'package:figure_toys/views/page/login.dart';
 import 'package:flutter/material.dart';
+import '../../utils/common_function.dart';
+import '../../utils/shared_preferences_manage.dart';
 import '../widget/footer/footer_widget.dart';
 import '../widget/header/header_widget.dart';
 import '../widget/menu/menu_side_widget.dart';
@@ -22,6 +25,13 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   late ValueNotifier<bool> isMenuVisible;
   late AnimationController _menuController;
   late Animation<Offset> _menuAnimation;
+
+  // Future checkToken() async {
+  //   String? token = await SharedPreferencesManage.getToken();
+  //   if (isNullOrEmpty(token)) {
+  //     pushAndRemoveUntil(context, LoginPage());
+  //   }
+  // }
 
   @override
   void initState() {
@@ -56,9 +66,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColor.bgColor,
-      body: Row(
+    return Row(
         children: [
           // Menu trái (ẩn/hiện dựa trên isMenuVisible)
 
@@ -131,7 +139,6 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
             ),
           ),
         ],
-      ),
-    );
+      ) ;
   }
 }

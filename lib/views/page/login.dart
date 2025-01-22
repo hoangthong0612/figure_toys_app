@@ -1,7 +1,15 @@
 import 'dart:ui';
 
+import 'package:figure_toys/utils/common_function.dart';
+import 'package:figure_toys/views/layout/main_layout.dart';
+import 'package:figure_toys/views/page/main_page.dart';
+import 'package:figure_toys/views/page/product/product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../main.dart';
+import '../../utils/shared_preferences_manage.dart';
+import 'dashboard/dashboard_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,7 +21,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  void _handleLogin() {
+  Future<void> _handleLogin() async {
     String email = emailController.text.trim();
     String password = passwordController.text;
 
@@ -27,9 +35,8 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(content: Text('Vui lòng nhập đầy đủ thông tin!')),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Đăng nhập thành công với email: $email')),
-      );
+      await SharedPreferencesManage.setToken("123123");
+      pushPage(context, MainPage());
     }
   }
   @override
@@ -123,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(color: Colors.white, width: 2),
+
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
