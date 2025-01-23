@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
+// import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:figure_toys/utils/request/save_data_method_api.dart';
 
 import '../../main.dart';
@@ -33,14 +34,26 @@ class ApiCaller {
 
   ApiCaller() {
     _dio = Dio();
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) {
-        return true;
-      };
-      return null;
-    };
+    // (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
+    //     (client) {
+    //   client.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) {
+    //     return true;
+    //   };
+    //   return null;
+    // };
+    _dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        // Don't trust any certificate just because their root cert is trusted.
+        final HttpClient client =
+        HttpClient(context: SecurityContext(withTrustedRoots: false));
+        // You can test the intermediate / root cert here. We just ignore it.
+        client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
+        return client;
+      },
+    );
+
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
       String? token = await SharedPreferencesManage.getToken();
@@ -53,9 +66,9 @@ class ApiCaller {
       };
       options.baseUrl = "${baseUrl ?? ApiUrl.baseUrl}/api/";
       options.responseType = ResponseType.plain;
-      options.connectTimeout = timeOut;
-      options.receiveTimeout = timeOut;
-      options.sendTimeout = timeOut;
+      options.connectTimeout = Duration(milliseconds: timeOut);
+      options.receiveTimeout = Duration(milliseconds: timeOut);
+      options.sendTimeout = Duration(milliseconds: timeOut) ;
       options.headers.addAll(customHeaders);
       return handler.next(options);
     }));
@@ -107,7 +120,7 @@ class ApiCaller {
     try {
       Response response = await _dio.get(path, queryParameters: params);
       return _response(response, responseData);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       return _errorException(dioError: ex);
     } on Exception {
       return _errorException();
@@ -125,15 +138,15 @@ class ApiCaller {
     // String resultCode = "";
     if (dioError != null) {
       switch (dioError.type) {
-        case DioErrorType.connectTimeout:
-        case DioErrorType.receiveTimeout:
-        case DioErrorType.sendTimeout:
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.receiveTimeout:
+        case DioExceptionType.sendTimeout:
           message = "Máy chủ không phản hồi";
           code = timeOutCode;
           return BaseResponse(
               message: MessageResponse(content: message, type: code),
               status: 500);
-        case DioErrorType.other:
+        case DioExceptionType.unknown:
           {
             message = "Không tìm thấy máy chủ";
             code = dioErrorDefault;
@@ -161,14 +174,20 @@ class ApiCaller {
             return BaseResponse(
                 message: MessageResponse(content: message, type: code));
           }
-        case DioErrorType.response:
-        case DioErrorType.cancel:
+        case DioExceptionType.badResponse:
+        case DioExceptionType.cancel:
           {
             return _response(dioError.response!, null);
           }
       // case DioErrorType.cancel:
       //   // TODO: Handle this case.
       //   break;
+        case DioExceptionType.badCertificate:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case DioExceptionType.connectionError:
+          // TODO: Handle this case.
+          throw UnimplementedError();
       }
     }
     return null;

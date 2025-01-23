@@ -180,7 +180,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '${widget.product.price} VNĐ',
+                            '${widget.product.priceFormat }',
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.green,

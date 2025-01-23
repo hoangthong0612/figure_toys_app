@@ -5,7 +5,7 @@ class Token {
   List<int>? companyIds;
   int? partnerId;
   String? accessToken;
-  bool? companyName;
+  String? companyName;
   String? name;
 
   Token(
