@@ -7,7 +7,7 @@ class SideMenu extends StatefulWidget {
   final Function(String) onPageSelected;
   final String currentPage; // Trang hiện tại
 
-  const SideMenu({
+  const SideMenu({super.key,
     required this.onPageSelected,
     required this.currentPage,
   });

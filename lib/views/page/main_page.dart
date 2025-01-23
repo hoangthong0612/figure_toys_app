@@ -1,4 +1,5 @@
 import 'package:figure_toys/views/page/product/product_page.dart';
+import 'package:figure_toys/views/page/sale_order/sale_order_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +61,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         pages: {
           'home': HomeScreen(),
           'product': ProductPage(),
-          'another': Text('Another Page'),
+          'saleOrder': SaleOrderPage(),
         },
       ),
     )  : LoginPage();

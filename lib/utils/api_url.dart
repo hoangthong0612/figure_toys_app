@@ -3,5 +3,6 @@ class ApiUrl {
 
   static String token = '/auth/token';
   static String product = '/v1/product';
+  static String saleOrder = '/v1/sale/order';
 
 }

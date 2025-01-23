@@ -6,7 +6,7 @@ class SideMenuData {
   final menu = <MenuModel>[
     MenuModel(icon: Icons.home, name: "Trang chủ" , route: 'home'),
     MenuModel(icon: Icons.production_quantity_limits_outlined, name: "Sản phẩm", route: 'product'),
-    MenuModel(icon: Icons.logout, name: "Đăng xuất" ,route: 'logout'),
+    MenuModel(icon: Icons.point_of_sale, name: "Đơn hàng" ,route: 'saleOrder'),
   ];
 
 }
