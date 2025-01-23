@@ -118,7 +118,7 @@ Route _pageBuilder(
   //     .push(EnterExitRoute(enterPage: page, exitPage: page));
 }
 
-// const String textNotLeftBlank = ' không được bỏ trống!';
+const String textNotLeftBlank = ' không được bỏ trống!';
 //
 // String getEspecially(String date, {String? format}) {
 //   return DateFormat(format).format(getDateTimeObject(date));

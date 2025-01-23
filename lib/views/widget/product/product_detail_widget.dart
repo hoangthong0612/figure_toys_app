@@ -2,9 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:figure_toys/utils/colors.dart';
 import 'package:figure_toys/utils/common_function.dart';
 import 'package:figure_toys/utils/enum_base.dart';
+import 'package:figure_toys/views/components/html_to_text.dart';
 import 'package:figure_toys/views/page/cart/cart_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:html/parser.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../models/product_model.dart';
@@ -45,9 +47,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
 
   void clickNextImage(String type) {
     int active = activeIndex;
-    int length = widget
-        .getImages()
-        .length;
+    int length = widget.getImages().length;
     if (type == 'left') {
       if (active == 0) {
         _controller.animateToPage(length - 1);
@@ -66,20 +66,17 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = (widget
-        .getImages()
-        .length > 0)
+    final List<Widget> imageSliders = (widget.getImages().isNotEmpty)
         ? widget
-        .getImages()
-        .map((item) =>
-        Container(
-          margin: EdgeInsets.all(5.0),
-          child: Image.network(
-            item,
-            fit: BoxFit.fill,
-          ),
-        ))
-        .toList()
+            .getImages()
+            .map((item) => Container(
+                  margin: EdgeInsets.all(5.0),
+                  child: Image.network(
+                    item,
+                    fit: BoxFit.fill,
+                  ),
+                ))
+            .toList()
         : [Text('No Image')];
 
     return Stack(
@@ -88,10 +85,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
           child: Container(
             constraints: BoxConstraints(
               minHeight:
-              MediaQuery
-                  .of(context)
-                  .size
-                  .height, // Set minimum height
+                  MediaQuery.of(context).size.height, // Set minimum height
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,11 +116,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: IconButton(
-                                onPressed: () =>
-                                {
-                                  // print('left')
-                                  clickNextImage('right')
-                                },
+                                onPressed: () => {
+                                      // print('left')
+                                      clickNextImage('right')
+                                    },
                                 icon: Icon(Icons.arrow_forward)),
                           ),
                         ),
@@ -137,9 +130,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           carouselController: _controller,
                           options: CarouselOptions(
                               autoPlay:
-                              widget
-                                  .getImages()
-                                  .length > 1 ? true : false,
+                                  widget.getImages().length > 1 ? true : false,
                               autoPlayInterval: Duration(seconds: 10),
                               // aspectRatio: 1.0,
                               // enlargeCenterPage: true,
@@ -158,9 +149,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 Center(
                   child: AnimatedSmoothIndicator(
                     activeIndex: activeIndex,
-                    count: widget
-                        .getImages()
-                        .length,
+                    count: widget.getImages().length,
                     effect: ExpandingDotsEffect(
                         dotHeight: 10,
                         dotWidth: 10,
@@ -178,7 +167,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 50, vertical: 25),
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -186,7 +175,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${widget.product.title}',
+                            '${widget.product.name}',
                             style: TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           ),
@@ -208,7 +197,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            widget.product.availabilityStatus.toString(),
+                            '',
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
@@ -216,9 +205,13 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        widget.product.description ?? '',
-                      ),
+                      // Text(
+                      //   parse(widget.product.descriptionEcommerce ?? '').outerHtml
+                      // ),
+                      // HtmlToTextWidget(
+                      //     htmlContent:
+                      //         widget.product.descriptionEcommerce ?? ''),
+                      HtmlWidget(widget.product.descriptionEcommerce ?? ''),
                       SizedBox(
                         height: 100,
                       ),
@@ -257,8 +250,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: IconButton(
-                          onPressed: () =>
-                          {
+                          onPressed: () => {
                             pushPage(context, CartPage(),
                                 transitionAnimation: TransitionEnum.upToDown)
                           },
@@ -310,15 +302,12 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () =>
-                      {
-                        addToCartProduct()
-                      },
+                      onPressed: () => {addToCartProduct()},
                       style: ButtonStyle(
                         backgroundColor:
-                        WidgetStatePropertyAll<Color>(Colors.deepOrange),
+                            WidgetStatePropertyAll<Color>(Colors.deepOrange),
                         foregroundColor:
-                        WidgetStatePropertyAll<Color>(Colors.white),
+                            WidgetStatePropertyAll<Color>(Colors.white),
                         padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(
                           EdgeInsets.symmetric(horizontal: 0, vertical: 25),
                         ),
@@ -338,18 +327,13 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
   addToCartProduct() {
     if (quantityProduct <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                'Số lượng sản phẩm phải > 0')),
+        SnackBar(content: Text('Số lượng sản phẩm phải > 0')),
       );
-    }
-    else {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             backgroundColor: Colors.green,
-            content: Text(
-                'Đã thêm vào giỏ hàng')),
-
+            content: Text('Đã thêm vào giỏ hàng')),
       );
     }
   }

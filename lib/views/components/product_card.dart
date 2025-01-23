@@ -18,7 +18,7 @@ class ProductCard extends StatelessWidget {
           context,
           ProductDetailPage(
             id: product.id ?? 0,
-            name: product.title ?? '',
+            name: product.name ?? '',
           ),
           transitionAnimation: TransitionEnum.rightToLeft
         );
@@ -48,7 +48,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.title ?? '',
+                    product.name ?? '',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

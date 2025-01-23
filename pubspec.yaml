@@ -39,6 +39,9 @@ dependencies:
   carousel_slider: ^5.0.0
   smooth_page_indicator: ^1.2.0+3
   shared_preferences: ^2.3.5
+  html: ^0.15.5
+  flutter_widget_from_html: ^0.15.3
+
 
 dev_dependencies:
   flutter_test:

@@ -22,7 +22,7 @@ class _ProductCartComponentState extends State<ProductCartComponent> {
       children: [
         InkWell(
           onTap: () => {
-            pushPage(context, ProductDetailPage(id: widget.product.id ?? 0 , name: widget.product.title ?? ''))
+            pushPage(context, ProductDetailPage(id: widget.product.id ?? 0 , name: widget.product.name ?? ''))
           },
           child: Container(
             decoration: BoxDecoration(
@@ -52,11 +52,11 @@ class _ProductCartComponentState extends State<ProductCartComponent> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${widget.product.title}',
+                        '${widget.product.name}',
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        widget.product.description ?? '',
+                        widget.product.descriptionSale ?? '',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

@@ -1,11 +1,11 @@
-class FgResponse {
+class BaseResponse {
   int? status;
   dynamic data;
   MessageResponse? message;
 
-  FgResponse({this.status, this.message, this.data});
+  BaseResponse({this.status, this.message, this.data});
 
-  FgResponse.fromJson(Map<String, dynamic> json, dynamic responseData) {
+  BaseResponse.fromJson(Map<String, dynamic> json, dynamic responseData) {
     try {
       status = json['status'];
       if (responseData != null && json["data"] != null) {
@@ -29,9 +29,9 @@ class FgResponse {
           : null;
     } on Exception catch (e) {
       print("BaseResponse - $e");
-      status = 2001;
+      status = 1998;
       message =
-          MessageResponse(type: 2001, content: "Có lỗi khi phân tích gói tin");
+          MessageResponse(type: 1998, content: "Có lỗi khi phân tích gói tin");
     }
   }
 

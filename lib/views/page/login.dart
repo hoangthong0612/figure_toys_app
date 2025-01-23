@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:figure_toys/utils/auth/auth.dart';
 import 'package:figure_toys/utils/common_function.dart';
 import 'package:figure_toys/views/layout/main_layout.dart';
 import 'package:figure_toys/views/page/main_page.dart';
@@ -19,25 +20,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  Future<void> _handleLogin() async {
-    String email = emailController.text.trim();
-    String password = passwordController.text;
-
-    // Hiển thị thông tin trong Console
-    print('Email: $email');
-    print('Password: $password');
-
-    // Thêm logic kiểm tra hoặc gọi API tại đây
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng nhập đầy đủ thông tin!')),
-      );
-    } else {
-      await SharedPreferencesManage.setToken("123123");
-      pushPage(context, MainPage());
-    }
+  final TextEditingController emailController = TextEditingController(text: '');
+  final TextEditingController passwordController = TextEditingController(text: '');
+  final _cubit = Authentication();
+  Future<void> _handleLogin(BuildContext content) async {
+    _cubit.login(emailController.text, passwordController.text, context);
   }
   @override
   Widget build(BuildContext context) {
@@ -144,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                           ElevatedButton(
                             onPressed: () {
                               // Thực hiện logic đăng nhập
-                              this._handleLogin();
+                              _handleLogin(context);
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
